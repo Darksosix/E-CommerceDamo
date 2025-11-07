@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail - SOLE STREET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .accent-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .image-gallery img {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .image-gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .size-option {
+            transition: all 0.3s ease;
+        }
+
+        .size-option.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.1);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#667eea',
+                        secondary: '#764ba2',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Navigation (Same as index) -->
+    <nav class="fixed w-full top-0 z-50 bg-black text-white">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="w-10 h-10 accent-gradient rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shoe-prints text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-black tracking-tight">SOLE STREET</span>
+                </a>
+
+                <div class="flex items-center space-x-6">
+                    <a href="index.html" class="hover:text-primary transition">
+                        <i class="fas fa-arrow-left mr-2"></i>กลับหน้าหลัก
+                    </a>
+                    <div class="relative cursor-pointer" id="cartIcon">
+                        <i class="fas fa-shopping-cart text-xl hover:text-primary transition"></i>
+                        <span class="absolute -top-2 -right-2 bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold" id="cartCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Detail Section -->
+    <section class="pt-32 pb-16">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Image Gallery -->
+                <div>
+                    <!-- Main Image -->
+                    <div class="mb-6 bg-white rounded-2xl overflow-hidden shadow-xl">
+                        <img id="mainImage" 
+                             src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800" 
+                             alt="Product" 
+                             class="w-full h-[500px] object-cover">
+                    </div>
+
+                    <!-- Thumbnail Gallery -->
+                    <div class="grid grid-cols-4 gap-4 image-gallery">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200" 
+                             class="w-full h-24 object-cover rounded-lg border-2 border-primary" 
+                             onclick="changeMainImage(this.src)">
+                        <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=200" 
+                             class="w-full h-24 object-cover rounded-lg border-2 border-gray-200" 
+                             onclick="changeMainImage(this.src)">
+                        <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=200" 
+                             class="w-full h-24 object-cover rounded-lg border-2 border-gray-200" 
+                             onclick="changeMainImage(this.src)">
+                        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=200" 
+                             class="w-full h-24 object-cover rounded-lg border-2 border-gray-200" 
+                             onclick="changeMainImage(this.src)">
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div>
+                    <div class="mb-4">
+                        <span class="text-sm text-gray-500 uppercase tracking-wider">Nike</span>
+                        <div class="flex items-center gap-2 mt-1">
+                            <div class="flex items-center text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-sm text-gray-600">(4.9) 256 รีวิว</span>
+                        </div>
+                    </div>
+
+                    <h1 class="text-4xl font-black mb-4">Nike Air Max 270</h1>
+                    
+                    <div class="flex items-baseline gap-4 mb-6">
+                        <span class="text-5xl font-black gradient-text">฿5,200</span>
+                        <span class="text-xl text-gray-400 line-through">฿6,500</span>
+                        <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">-20%</span>
+                    </div>
+
+                    <p class="text-gray-700 text-lg mb-6 leading-relaxed">
+                        รองเท้าสุดคลาสสิกที่ออกแบบมาเพื่อความสะดวกสบายสูงสุด 
+                        พร้อมเทคโนโลยี Air Max ที่ช่วยรองรับการเคลื่อนไหวได้อย่างดีเยี่ยม 
+                        เหมาะสำหรับทั้งการออกกำลังกายและการใช้งานในชีวิตประจำวัน
+                    </p>
+
+                    <!-- Color Selection -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-bold mb-3">เลือกสี:</label>
+                        <div class="flex gap-3">
+                            <button class="px-6 py-3 border-2 border-black rounded-lg font-semibold hover:bg-black hover:text-white transition">
+                                Black/White
+                            </button>
+                            <button class="px-6 py-3 border-2 border-gray-300 rounded-lg font-semibold hover:border-black transition">
+                                Blue/Orange
+                            </button>
+                            <button class="px-6 py-3 border-2 border-gray-300 rounded-lg font-semibold hover:border-black transition">
+                                Red/White
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Size Selection -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-bold mb-3">เลือกไซส์:</label>
+                        <div class="grid grid-cols-5 gap-3" id="sizeOptions">
+                            <button class="size-option border-2 border-gray-300 py-3 rounded-lg font-semibold hover:border-black transition" 
+                                    onclick="selectSize(this)">7</button>
+                            <button class="size-option border-2 border-gray-300 py-3 rounded-lg font-semibold hover:border-black transition" 
+                                    onclick="selectSize(this)">8</button>
+                            <button class="size-option border-2 border-gray-300 py-3 rounded-lg font-semibold hover:border-black transition" 
+                                    onclick="selectSize(this)">9</button>
+                            <button class="size-option border-2 border-gray-300 py-3 rounded-lg font-semibold hover:border-black transition" 
+                                    onclick="selectSize(this)">10</button>
+                            <button class="size-option border-2 border-gray-300 py-3 rounded-lg font-semibold hover:border-black transition" 
+                                    onclick="selectSize(this)">11</button>
+                            <button class="size-option border-2 border-gray-300 py-3 rounded-lg font-semibold hover:border-black transition" 
+                                    onclick="selectSize(this)">12</button>
+                        </div>
+                    </div>
+
+                    <!-- Quantity -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-bold mb-3">จำนวน:</label>
+                        <div class="flex items-center gap-4">
+                            <button onclick="updateQty(-1)" 
+                                    class="w-12 h-12 border-2 border-gray-300 rounded-lg font-bold hover:border-black transition">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span id="quantity" class="text-2xl font-bold w-12 text-center">1</span>
+                            <button onclick="updateQty(1)" 
+                                    class="w-12 h-12 border-2 border-gray-300 rounded-lg font-bold hover:border-black transition">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <span class="text-gray-600 ml-4">
+                                <i class="fas fa-box mr-2"></i>คงเหลือ 25 คู่
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-4 mb-8">
+                        <button onclick="addToCartFromDetail()" 
+                                class="flex-1 accent-gradient text-white py-4 rounded-full font-bold text-lg hover:shadow-2xl transform hover:scale-105 transition">
+                            <i class="fas fa-shopping-cart mr-2"></i>ใส่ตะกร้า
+                        </button>
+                        <button class="w-16 h-16 border-2 border-black rounded-full hover:bg-black hover:text-white transition">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+
+                    <!-- Product Info Icons -->
+                    <div class="grid grid-cols-3 gap-4 p-6 bg-white rounded-2xl shadow-lg">
+                        <div class="text-center">
+                            <i class="fas fa-truck text-3xl text-primary mb-2"></i>
+                            <p class="text-sm font-semibold">จัดส่งฟรี</p>
+                            <p class="text-xs text-gray-500">สั่งซื้อตั้งแต่ 2,000฿</p>
+                        </div>
+                        <div class="text-center">
+                            <i class="fas fa-shield-alt text-3xl text-primary mb-2"></i>
+                            <p class="text-sm font-semibold">ของแท้ 100%</p>
+                            <p class="text-xs text-gray-500">รับประกันทุกชิ้น</p>
+                        </div>
+                        <div class="text-center">
+                            <i class="fas fa-undo text-3xl text-primary mb-2"></i>
+                            <p class="text-sm font-semibold">คืนสินค้าง่าย</p>
+                            <p class="text-xs text-gray-500">ภายใน 14 วัน</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details Tabs -->
+            <div class="mt-16">
+                <div class="border-b border-gray-200">
+                    <div class="flex gap-8">
+                        <button class="tab-btn px-6 py-4 font-bold border-b-2 border-black" onclick="switchTab('specs')">
+                            รายละเอียดสินค้า
+                        </button>
+                        <button class="tab-btn px-6 py-4 font-bold border-b-2 border-transparent hover:border-gray-300" onclick="switchTab('reviews')">
+                            รีวิวจากลูกค้า (256)
+                        </button>
+                        <button class="tab-btn px-6 py-4 font-bold border-b-2 border-transparent hover:border-gray-300" onclick="switchTab('shipping')">
+                            การจัดส่ง
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Specs Tab -->
+                <div id="specs-tab" class="tab-content py-8">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4">สเปคสินค้า</h3>
+                            <table class="w-full">
+                                <tr class="border-b">
+                                    <td class="py-3 font-semibold">รุ่น:</td>
+                                    <td class="py-3 text-gray-600">Nike Air Max 270</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="py-3 font-semibold">รหัสสินค้า:</td>
+                                    <td class="py-3 text-gray-600">AH8050-002</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="py-3 font-semibold">วัสดุ:</td>
+                                    <td class="py-3 text-gray-600">Mesh + Synthetic</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="py-3 font-semibold">พื้นรองเท้า:</td>
+                                    <td class="py-3 text-gray-600">Rubber with Air Max technology</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="py-3 font-semibold">น้ำหนัก:</td>
+                                    <td class="py-3 text-gray-600">~300g (ไซส์ 9)</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4">คุณสมบัติเด่น</h3>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i>
+                                    <span>เทคโนโลยี Air Max 270 ให้การรองรับที่ดีเยี่ยม</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i>
+                                    <span>วัสดุ Mesh ระบายอากาศได้ดี</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i>
+                                    <span>พื้นรองเท้ายางคุณภาพสูงทนทาน</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i>
+                                    <span>ดีไซน์ทันสมัยเข้ากับทุกสไตล์</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i>
+                                    <span>น้ำหนักเบา สวมใส่สบายตลอดวัน</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reviews Tab -->
+                <div id="reviews-tab" class="tab-content py-8 hidden">
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <!-- Review Card 1 -->
+                        <div class="bg-white p-6 rounded-2xl shadow-lg">
+                            <div class="flex items-center mb-4">
+                                <img src="https://i.pravatar.cc/150?img=12" class="w-12 h-12 rounded-full mr-3">
+                                <div>
+                                    <h4 class="font-bold">นายสมชาย ใจดี</h4>
+                                    <div class="text-yellow-400 text-sm">
+                                        ★★★★★
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mb-2">
+                                "รองเท้าสวยมาก ใส่สบายเท้า คุณภาพดีเกินราคา 
+                                จัดส่งไวมากๆ แนะนำเลยครับ!"
+                            </p>
+                            <span class="text-xs text-gray-400">5 พ.ย. 2025</span>
+                        </div>
+
+                        <!-- Review Card 2 -->
+                        <div class="bg-white p-6 rounded-2xl shadow-lg">
+                            <div class="flex items-center mb-4">
+                                <img src="https://i.pravatar.cc/150?img=23" class="w-12 h-12 rounded-full mr-3">
+                                <div>
+                                    <h4 class="font-bold">นางสาวสมหญิง รักสวย</h4>
+                                    <div class="text-yellow-400 text-sm">
+                                        ★★★★★
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mb-2">
+                                "ของแท้ ราคาดี บริการเยี่ยม ส่งเร็วมาก 
+                                จะกลับมาซื้ออีกแน่นอนค่ะ"
+                            </p>
+                            <span class="text-xs text-gray-400">4 พ.ย. 2025</span>
+                        </div>
+
+                        <!-- Review Card 3 -->
+                        <div class="bg-white p-6 rounded-2xl shadow-lg">
+                            <div class="flex items-center mb-4">
+                                <img src="https://i.pravatar.cc/150?img=33" class="w-12 h-12 rounded-full mr-3">
+                                <div>
+                                    <h4 class="font-bold">ธนากร วิ่งเร็ว</h4>
+                                    <div class="text-yellow-400 text-sm">
+                                        ★★★★★
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mb-2">
+                                "ใส่วิ่งสบายมาก พื้นรองรับดี น้ำหนักเบา 
+                                เป็นรองเท้าที่ดีที่สุดที่เคยซื้อครับ"
+                            </p>
+                            <span class="text-xs text-gray-400">3 พ.ย. 2025</span>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-8">
+                        <button class="border-2 border-black px-8 py-3 rounded-full font-bold hover:bg-black hover:text-white transition">
+                            ดูรีวิวทั้งหมด (256)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Shipping Tab -->
+                <div id="shipping-tab" class="tab-content py-8 hidden">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-white p-8 rounded-2xl shadow-lg">
+                            <h3 class="text-2xl font-bold mb-4">
+                                <i class="fas fa-shipping-fast text-primary mr-2"></i>
+                                การจัดส่ง
+                            </h3>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                    <span>จัดส่งฟรีสำหรับคำสั่งซื้อตั้งแต่ 2,000 บาท</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                    <span>จัดส่งภายใน 2-3 วันทำการ (กรุงเทพและปริมณฑล)</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                    <span>จัดส่งภายใน 3-5 วันทำการ (ต่างจังหวัด)</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                    <span>ติดตามสถานะพัสดุได้แบบ Real-time</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-2xl shadow-lg">
+                            <h3 class="text-2xl font-bold mb-4">
+                                <i class="fas fa-undo-alt text-primary mr-2"></i>
+                                นโยบายการคืนสินค้า
+                            </h3>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                    <span>คืนสินค้าได้ภายใน 14 วัน</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                    <span>สินค้าต้องอยู่ในสภาพเดิม ไม่ผ่านการใช้งาน</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                    <span>มีกล่องและป้ายสินค้าครบถ้วน</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                    <span>คืนเงินภายใน 7-14 วันทำการ</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Products -->
+            <div class="mt-16">
+                <h2 class="text-3xl font-black mb-8">
+                    สินค้าที่<span class="gradient-text">เกี่ยวข้อง</span>
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <!-- Related Product Cards (Simplified) -->
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h4 class="font-bold mb-2">Yeezy Boost 350</h4>
+                            <p class="text-lg font-black gradient-text">฿8,900</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h4 class="font-bold mb-2">Ultraboost 22</h4>
+                            <p class="text-lg font-black gradient-text">฿7,200</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=400" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h4 class="font-bold mb-2">Jordan Retro High</h4>
+                            <p class="text-lg font-black gradient-text">฿7,500</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h4 class="font-bold mb-2">Air Force 1 Low</h4>
+                            <p class="text-lg font-black gradient-text">฿3,900</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let quantity = 1;
+        let selectedSize = null;
+
+        // Change main image
+        function changeMainImage(src) {
+            document.getElementById('mainImage').src = src.replace('w=200', 'w=800');
+            
+            // Update border on thumbnails
+            document.querySelectorAll('.image-gallery img').forEach(img => {
+                img.classList.remove('border-primary');
+                img.classList.add('border-gray-200');
+            });
+            event.target.classList.remove('border-gray-200');
+            event.target.classList.add('border-primary');
+        }
+
+        // Select size
+        function selectSize(btn) {
+            document.querySelectorAll('.size-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            btn.classList.add('selected');
+            selectedSize = btn.textContent;
+        }
+
+        // Update quantity
+        function updateQty(change) {
+            quantity = Math.max(1, Math.min(25, quantity + change));
+            document.getElementById('quantity').textContent = quantity;
+        }
+
+        // Add to cart
+        function addToCartFromDetail() {
+            if (!selectedSize) {
+                showNotification('กรุณาเลือกไซส์ก่อนใส่ตะกร้า', 'error');
+                return;
+            }
+
+            const product = {
+                id: 2,
+                name: 'Nike Air Max 270',
+                price: 5200,
+                image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500',
+                size: selectedSize,
+                quantity: quantity
+            };
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.id === product.id && item.size === selectedSize);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push(product);
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showNotification(`เพิ่ม ${product.name} (ไซส์ ${selectedSize}) จำนวน ${quantity} คู่ลงตะกร้าแล้ว!`, 'success');
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+            
+            notification.className = `fixed top-24 right-6 ${bgColor} text-white px-6 py-4 rounded-lg shadow-2xl z-50`;
+            notification.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} text-xl"></i>
+                    <span class="font-semibold">${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Switch tabs
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Remove active state from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-black');
+                btn.classList.add('border-transparent');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            
+            // Add active state to clicked button
+            event.target.classList.remove('border-transparent');
+            event.target.classList.add('border-black');
+        }
+
+        // Cart icon click
+        document.getElementById('cartIcon').addEventListener('click', () => {
+            window.location.href = 'index.html#cart';
+        });
+
+        // Initialize
+        updateCartCount();
+    </script>
+</body>
+</html>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SOLE STREET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .accent-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .sidebar {
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar.hidden-mobile {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#667eea',
+                        secondary: '#764ba2',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Sidebar -->
+    <aside class="sidebar fixed left-0 top-0 h-full w-64 bg-black text-white z-50">
+        <div class="p-6">
+            <!-- Logo -->
+            <div class="flex items-center space-x-2 mb-8">
+                <div class="w-10 h-10 accent-gradient rounded-lg flex items-center justify-center">
+                    <i class="fas fa-shoe-prints text-white text-xl"></i>
+                </div>
+                <div>
+                    <div class="text-xl font-black">SOLE STREET</div>
+                    <div class="text-xs text-gray-400">Admin Panel</div>
+                </div>
+            </div>
+
+            <!-- Menu -->
+            <nav class="space-y-2">
+                <a href="#dashboard" class="menu-item flex items-center space-x-3 p-3 rounded-lg bg-white bg-opacity-10 text-white" onclick="showSection('dashboard')">
+                    <i class="fas fa-chart-line w-5"></i>
+                    <span>แดชบอร์ด</span>
+                </a>
+                <a href="#products" class="menu-item flex items-center space-x-3 p-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition" onclick="showSection('products')">
+                    <i class="fas fa-box w-5"></i>
+                    <span>จัดการสินค้า</span>
+                </a>
+                <a href="#orders" class="menu-item flex items-center space-x-3 p-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition" onclick="showSection('orders')">
+                    <i class="fas fa-shopping-cart w-5"></i>
+                    <span>คำสั่งซื้อ</span>
+                </a>
+                <a href="#stock" class="menu-item flex items-center space-x-3 p-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition" onclick="showSection('stock')">
+                    <i class="fas fa-warehouse w-5"></i>
+                    <span>สต็อกสินค้า</span>
+                </a>
+                <a href="#customers" class="menu-item flex items-center space-x-3 p-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition" onclick="showSection('customers')">
+                    <i class="fas fa-users w-5"></i>
+                    <span>ลูกค้า</span>
+                </a>
+                <a href="#analytics" class="menu-item flex items-center space-x-3 p-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition" onclick="showSection('analytics')">
+                    <i class="fas fa-chart-bar w-5"></i>
+                    <span>รายงาน</span>
+                </a>
+            </nav>
+
+            <!-- Back to Store -->
+            <div class="absolute bottom-6 left-6 right-6">
+                <a href="index.html" class="block text-center py-3 bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 transition">
+                    <i class="fas fa-store mr-2"></i>
+                    กลับหน้าร้าน
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-64 p-8">
+        <!-- Header -->
+        <header class="mb-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-black">
+                        แดชบอร์ด<span class="gradient-text">แอดมิน</span>
+                    </h1>
+                    <p class="text-gray-600 mt-1">ยินดีต้อนรับกลับมา, Admin</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="relative">
+                        <i class="fas fa-bell text-2xl text-gray-600 hover:text-black transition"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <img src="https://i.pravatar.cc/150?img=68" class="w-10 h-10 rounded-full">
+                        <div>
+                            <div class="font-bold">Admin User</div>
+                            <div class="text-xs text-gray-500">ผู้ดูแลระบบ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="section-content">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-gray-500 text-sm">ยอดขายวันนี้</p>
+                            <h3 class="text-3xl font-black mt-2">฿45,600</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-dollar-sign text-green-500 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-green-500 text-sm">
+                        <i class="fas fa-arrow-up mr-1"></i>
+                        <span>+12.5%</span>
+                        <span class="text-gray-500 ml-2">จากเมื่อวาน</span>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-gray-500 text-sm">คำสั่งซื้อใหม่</p>
+                            <h3 class="text-3xl font-black mt-2">28</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-shopping-cart text-blue-500 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-blue-500 text-sm">
+                        <i class="fas fa-arrow-up mr-1"></i>
+                        <span>+8.2%</span>
+                        <span class="text-gray-500 ml-2">จากเมื่อวาน</span>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-gray-500 text-sm">สินค้าทั้งหมด</p>
+                            <h3 class="text-3xl font-black mt-2">524</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-box text-purple-500 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-orange-500 text-sm">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                        <span>12 สินค้าเหลือน้อย</span>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-gray-500 text-sm">ลูกค้าใหม่</p>
+                            <h3 class="text-3xl font-black mt-2">156</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users text-pink-500 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-green-500 text-sm">
+                        <i class="fas fa-arrow-up mr-1"></i>
+                        <span>+15.3%</span>
+                        <span class="text-gray-500 ml-2">เดือนนี้</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <!-- Sales Chart -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">ยอดขาย 7 วันล่าสุด</h3>
+                    <canvas id="salesChart"></canvas>
+                </div>
+
+                <!-- Category Chart -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">ยอดขายตามหมวดหมู่</h3>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold">คำสั่งซื้อล่าสุด</h3>
+                    <button class="text-primary hover:underline">ดูทั้งหมด</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b">
+                                <th class="text-left py-3 px-4 font-semibold">เลขที่</th>
+                                <th class="text-left py-3 px-4 font-semibold">ลูกค้า</th>
+                                <th class="text-left py-3 px-4 font-semibold">สินค้า</th>
+                                <th class="text-left py-3 px-4 font-semibold">ยอดรวม</th>
+                                <th class="text-left py-3 px-4 font-semibold">สถานะ</th>
+                                <th class="text-left py-3 px-4 font-semibold">การกระทำ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-4 px-4">#0001</td>
+                                <td class="py-4 px-4">นายสมชาย ใจดี</td>
+                                <td class="py-4 px-4">Air Max 270 x2</td>
+                                <td class="py-4 px-4 font-bold">฿10,400</td>
+                                <td class="py-4 px-4">
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">ชำระแล้ว</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <button class="text-primary hover:underline">ดูรายละเอียด</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-4 px-4">#0002</td>
+                                <td class="py-4 px-4">นางสาวสมหญิง รักสวย</td>
+                                <td class="py-4 px-4">Yeezy Boost 350</td>
+                                <td class="py-4 px-4 font-bold">฿8,900</td>
+                                <td class="py-4 px-4">
+                                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-semibold">รอชำระ</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <button class="text-primary hover:underline">ดูรายละเอียด</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-4 px-4">#0003</td>
+                                <td class="py-4 px-4">ธนากร วิ่งเร็ว</td>
+                                <td class="py-4 px-4">Ultraboost 22</td>
+                                <td class="py-4 px-4 font-bold">฿7,200</td>
+                                <td class="py-4 px-4">
+                                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">กำลังจัดส่ง</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <button class="text-primary hover:underline">ดูรายละเอียด</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Management Section -->
+        <section id="products-section" class="section-content hidden">
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold">จัดการสินค้า</h3>
+                    <button onclick="showAddProductModal()" class="accent-gradient text-white px-6 py-3 rounded-full font-bold hover:shadow-xl transition">
+                        <i class="fas fa-plus mr-2"></i>เพิ่มสินค้าใหม่
+                    </button>
+                </div>
+
+                <!-- Search & Filter -->
+                <div class="flex gap-4 mb-6">
+                    <input type="text" 
+                           placeholder="ค้นหาสินค้า..." 
+                           class="flex-1 px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                    <select class="px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                        <option>ทุกหมวดหมู่</option>
+                        <option>วิ่ง</option>
+                        <option>ไลฟ์สไตล์</option>
+                        <option>บาสเกตบอล</option>
+                    </select>
+                </div>
+
+                <!-- Products Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b">
+                                <th class="text-left py-3 px-4 font-semibold">รูปภาพ</th>
+                                <th class="text-left py-3 px-4 font-semibold">ชื่อสินค้า</th>
+                                <th class="text-left py-3 px-4 font-semibold">แบรนด์</th>
+                                <th class="text-left py-3 px-4 font-semibold">ราคา</th>
+                                <th class="text-left py-3 px-4 font-semibold">สต็อก</th>
+                                <th class="text-left py-3 px-4 font-semibold">สถานะ</th>
+                                <th class="text-left py-3 px-4 font-semibold">การกระทำ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <!-- Product rows will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stock Management Section -->
+        <section id="stock-section" class="section-content hidden">
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <h3 class="text-2xl font-bold mb-6">สต็อกสินค้า</h3>
+                
+                <!-- Low Stock Alert -->
+                <div class="bg-orange-50 border-l-4 border-orange-500 p-4 mb-6 rounded">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-triangle text-orange-500 text-xl mr-3"></i>
+                        <div>
+                            <h4 class="font-bold text-orange-800">แจ้งเตือนสต็อกต่ำ</h4>
+                            <p class="text-orange-700">มีสินค้า 12 รายการที่เหลือน้อยกว่า 10 ชิ้น</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b">
+                                <th class="text-left py-3 px-4 font-semibold">สินค้า</th>
+                                <th class="text-left py-3 px-4 font-semibold">SKU</th>
+                                <th class="text-left py-3 px-4 font-semibold">สต็อกปัจจุบัน</th>
+                                <th class="text-left py-3 px-4 font-semibold">สต็อกขั้นต่ำ</th>
+                                <th class="text-left py-3 px-4 font-semibold">สถานะ</th>
+                                <th class="text-left py-3 px-4 font-semibold">การกระทำ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-4 px-4 font-semibold">Air Jordan 1 Retro</td>
+                                <td class="py-4 px-4">AJ1-001</td>
+                                <td class="py-4 px-4">15</td>
+                                <td class="py-4 px-4">10</td>
+                                <td class="py-4 px-4">
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">ปกติ</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <button class="text-primary hover:underline">เพิ่มสต็อก</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-4 px-4 font-semibold">Yeezy Boost 350</td>
+                                <td class="py-4 px-4">YZ-350</td>
+                                <td class="py-4 px-4 text-orange-600 font-bold">5</td>
+                                <td class="py-4 px-4">10</td>
+                                <td class="py-4 px-4">
+                                    <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-semibold">ต่ำ</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <button class="text-primary hover:underline">เพิ่มสต็อก</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-4 px-4 font-semibold">Air Max 270</td>
+                                <td class="py-4 px-4">AM-270</td>
+                                <td class="py-4 px-4">25</td>
+                                <td class="py-4 px-4">10</td>
+                                <td class="py-4 px-4">
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">ปกติ</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <button class="text-primary hover:underline">เพิ่มสต็อก</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Orders Section -->
+        <section id="orders-section" class="section-content hidden">
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <h3 class="text-2xl font-bold mb-6">คำสั่งซื้อทั้งหมด</h3>
+                
+                <!-- Filter Tabs -->
+                <div class="flex gap-4 mb-6 border-b">
+                    <button class="px-4 py-2 border-b-2 border-black font-semibold">ทั้งหมด (45)</button>
+                    <button class="px-4 py-2 border-b-2 border-transparent hover:border-gray-300 text-gray-600">รอชำระ (8)</button>
+                    <button class="px-4 py-2 border-b-2 border-transparent hover:border-gray-300 text-gray-600">กำลังจัดส่ง (12)</button>
+                    <button class="px-4 py-2 border-b-2 border-transparent hover:border-gray-300 text-gray-600">สำเร็จ (25)</button>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Order Card -->
+                    <div class="border rounded-lg p-6 hover:shadow-lg transition">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="font-bold text-lg">คำสั่งซื้อ #0001</h4>
+                                <p class="text-gray-600 text-sm">7 พ.ย. 2025 - 14:30</p>
+                            </div>
+                            <span class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold">ชำระแล้ว</span>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-3 gap-4 mb-4">
+                            <div>
+                                <p class="text-gray-600 text-sm">ลูกค้า</p>
+                                <p class="font-semibold">นายสมชาย ใจดี</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 text-sm">สินค้า</p>
+                                <p class="font-semibold">Air Max 270 (x2)</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 text-sm">ยอดรวม</p>
+                                <p class="font-bold text-lg gradient-text">฿10,400</p>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-4 border-t">
+                            <button class="text-primary hover:underline font-semibold">ดูรายละเอียด</button>
+                            <div class="flex gap-2">
+                                <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                                    <i class="fas fa-shipping-fast mr-2"></i>จัดส่ง
+                                </button>
+                                <button class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
+                                    <i class="fas fa-print mr-2"></i>พิมพ์
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Sample product data for admin
+        const adminProducts = [
+            { id: 1, name: 'Air Jordan 1 Retro High', brand: 'Nike', price: 6500, stock: 15, status: 'active', image: 'https://images.unsplash.com/photo-1556906781-9cba4c1e6b01?w=100' },
+            { id: 2, name: 'Nike Air Max 270', brand: 'Nike', price: 5200, stock: 25, status: 'active', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100' },
+            { id: 3, name: 'Yeezy Boost 350 V2', brand: 'Adidas', price: 8900, stock: 5, status: 'active', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=100' },
+            { id: 4, name: 'Adidas Ultraboost 22', brand: 'Adidas', price: 7200, stock: 20, status: 'active', image: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=100' },
+        ];
+
+        // Show section
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section-content').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Remove active state from menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('bg-white', 'bg-opacity-10', 'text-white');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.remove('hidden');
+            
+            // Add active state to menu item
+            event.target.closest('.menu-item').classList.add('bg-white', 'bg-opacity-10', 'text-white');
+            
+            // Load data for products section
+            if (sectionName === 'products') {
+                loadProductsTable();
+            }
+        }
+
+        // Load products table
+        function loadProductsTable() {
+            const tbody = document.getElementById('productsTableBody');
+            tbody.innerHTML = adminProducts.map(product => `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-4 px-4">
+                        <img src="${product.image}" alt="${product.name}" class="w-16 h-16 object-cover rounded-lg">
+                    </td>
+                    <td class="py-4 px-4 font-semibold">${product.name}</td>
+                    <td class="py-4 px-4">${product.brand}</td>
+                    <td class="py-4 px-4 font-bold">฿${product.price.toLocaleString()}</td>
+                    <td class="py-4 px-4 ${product.stock < 10 ? 'text-orange-600 font-bold' : ''}">${product.stock}</td>
+                    <td class="py-4 px-4">
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+                            ${product.status === 'active' ? 'เปิดขาย' : 'ปิดขาย'}
+                        </span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <div class="flex gap-2">
+                            <button class="text-blue-500 hover:text-blue-700" onclick="editProduct(${product.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="text-red-500 hover:text-red-700" onclick="deleteProduct(${product.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Edit product
+        function editProduct(id) {
+            alert('แก้ไขสินค้า ID: ' + id);
+        }
+
+        // Delete product
+        function deleteProduct(id) {
+            if (confirm('คุณแน่ใจหรือไม่ที่จะลบสินค้านี้?')) {
+                alert('ลบสินค้า ID: ' + id);
+            }
+        }
+
+        // Show add product modal
+        function showAddProductModal() {
+            alert('เปิดฟอร์มเพิ่มสินค้าใหม่');
+        }
+
+        // Initialize Charts
+        window.addEventListener('DOMContentLoaded', function() {
+            // Sales Chart
+            const salesCtx = document.getElementById('salesChart');
+            if (salesCtx) {
+                new Chart(salesCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'],
+                        datasets: [{
+                            label: 'ยอดขาย (บาท)',
+                            data: [32000, 45000, 38000, 52000, 48000, 61000, 45600],
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Category Chart
+            const categoryCtx = document.getElementById('categoryChart');
+            if (categoryCtx) {
+                new Chart(categoryCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['วิ่ง', 'ไลฟ์สไตล์', 'บาสเกตบอล', 'Limited'],
+                        datasets: [{
+                            data: [35, 30, 20, 15],
+                            backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#4facfe']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - SOLE STREET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .accent-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .step-indicator {
+            transition: all 0.3s ease;
+        }
+
+        .step-indicator.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .payment-option {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#667eea',
+                        secondary: '#764ba2',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-black text-white">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="w-10 h-10 accent-gradient rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shoe-prints text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-black tracking-tight">SOLE STREET</span>
+                </a>
+
+                <div class="flex items-center space-x-6">
+                    <span class="text-gray-400">
+                        <i class="fas fa-lock mr-2"></i>ชำระเงินปลอดภัย
+                    </span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Checkout Section -->
+    <section class="pt-32 pb-16">
+        <div class="container mx-auto px-6">
+            <!-- Progress Steps -->
+            <div class="flex items-center justify-center mb-12">
+                <div class="flex items-center space-x-4">
+                    <div class="step-indicator active flex items-center justify-center w-12 h-12 rounded-full bg-gray-200 font-bold">1</div>
+                    <div class="w-24 h-1 bg-gray-200"></div>
+                    <div class="step-indicator flex items-center justify-center w-12 h-12 rounded-full bg-gray-200 font-bold">2</div>
+                    <div class="w-24 h-1 bg-gray-200"></div>
+                    <div class="step-indicator flex items-center justify-center w-12 h-12 rounded-full bg-gray-200 font-bold">3</div>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Left Column - Form -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Shipping Information -->
+                    <div class="bg-white rounded-2xl shadow-lg p-8">
+                        <h2 class="text-2xl font-black mb-6">
+                            <i class="fas fa-shipping-fast text-primary mr-2"></i>
+                            ข้อมูลการจัดส่ง
+                        </h2>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">ชื่อ</label>
+                                <input type="text" 
+                                       placeholder="ชื่อจริง" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">นามสกุล</label>
+                                <input type="text" 
+                                       placeholder="นามสกุล" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <label class="block text-sm font-semibold mb-2">เบอร์โทรศัพท์</label>
+                            <input type="tel" 
+                                   placeholder="0XX-XXX-XXXX" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                        </div>
+
+                        <div class="mt-6">
+                            <label class="block text-sm font-semibold mb-2">อีเมล</label>
+                            <input type="email" 
+                                   placeholder="example@email.com" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                        </div>
+
+                        <div class="mt-6">
+                            <label class="block text-sm font-semibold mb-2">ที่อยู่</label>
+                            <textarea rows="3" 
+                                      placeholder="บ้านเลขที่ ถนน ซอย" 
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary"></textarea>
+                        </div>
+
+                        <div class="grid md:grid-cols-3 gap-6 mt-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">จังหวัด</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                                    <option>กรุงเทพมหานคร</option>
+                                    <option>เชียงใหม่</option>
+                                    <option>ภูเก็ต</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">เขต/อำเภอ</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                                    <option>เลือกเขต/อำเภอ</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">รหัสไปรษณีย์</label>
+                                <input type="text" 
+                                       placeholder="10XXX" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Method -->
+                    <div class="bg-white rounded-2xl shadow-lg p-8">
+                        <h2 class="text-2xl font-black mb-6">
+                            <i class="fas fa-truck text-primary mr-2"></i>
+                            วิธีการจัดส่ง
+                        </h2>
+
+                        <div class="space-y-4">
+                            <label class="payment-option flex items-center justify-between p-4 border-2 rounded-lg selected">
+                                <div class="flex items-center">
+                                    <input type="radio" name="shipping" checked class="mr-4">
+                                    <div>
+                                        <div class="font-bold">จัดส่งด่วน Express</div>
+                                        <div class="text-sm text-gray-600">ได้รับภายใน 1-2 วัน</div>
+                                    </div>
+                                </div>
+                                <span class="font-bold">฿100</span>
+                            </label>
+
+                            <label class="payment-option flex items-center justify-between p-4 border-2 rounded-lg">
+                                <div class="flex items-center">
+                                    <input type="radio" name="shipping" class="mr-4">
+                                    <div>
+                                        <div class="font-bold">จัดส่งมาตรฐาน</div>
+                                        <div class="text-sm text-gray-600">ได้รับภายใน 3-5 วัน</div>
+                                    </div>
+                                </div>
+                                <span class="font-bold">ฟรี</span>
+                            </label>
+
+                            <label class="payment-option flex items-center justify-between p-4 border-2 rounded-lg">
+                                <div class="flex items-center">
+                                    <input type="radio" name="shipping" class="mr-4">
+                                    <div>
+                                        <div class="font-bold">รับสินค้าที่ร้าน</div>
+                                        <div class="text-sm text-gray-600">พร้อมรับทันที</div>
+                                    </div>
+                                </div>
+                                <span class="font-bold">ฟรี</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="bg-white rounded-2xl shadow-lg p-8">
+                        <h2 class="text-2xl font-black mb-6">
+                            <i class="fas fa-credit-card text-primary mr-2"></i>
+                            วิธีการชำระเงิน
+                        </h2>
+
+                        <div class="space-y-4">
+                            <label class="payment-option flex items-center p-4 border-2 rounded-lg selected">
+                                <input type="radio" name="payment" checked class="mr-4">
+                                <i class="fas fa-credit-card text-2xl text-primary mr-4"></i>
+                                <div>
+                                    <div class="font-bold">บัตรเครดิต / เดบิต</div>
+                                    <div class="text-sm text-gray-600">Visa, Mastercard, JCB</div>
+                                </div>
+                            </label>
+
+                            <label class="payment-option flex items-center p-4 border-2 rounded-lg">
+                                <input type="radio" name="payment" class="mr-4">
+                                <i class="fas fa-mobile-alt text-2xl text-primary mr-4"></i>
+                                <div>
+                                    <div class="font-bold">Mobile Banking</div>
+                                    <div class="text-sm text-gray-600">PromptPay, TrueMoney Wallet</div>
+                                </div>
+                            </label>
+
+                            <label class="payment-option flex items-center p-4 border-2 rounded-lg">
+                                <input type="radio" name="payment" class="mr-4">
+                                <i class="fas fa-university text-2xl text-primary mr-4"></i>
+                                <div>
+                                    <div class="font-bold">โอนผ่านธนาคาร</div>
+                                    <div class="text-sm text-gray-600">ทุกธนาคาร</div>
+                                </div>
+                            </label>
+
+                            <label class="payment-option flex items-center p-4 border-2 rounded-lg">
+                                <input type="radio" name="payment" class="mr-4">
+                                <i class="fas fa-money-bill-wave text-2xl text-primary mr-4"></i>
+                                <div>
+                                    <div class="font-bold">เก็บเงินปลายทาง (COD)</div>
+                                    <div class="text-sm text-gray-600">ชำระเมื่อรับสินค้า +฿50</div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Card Details -->
+                        <div id="cardDetails" class="mt-6 space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">หมายเลขบัตร</label>
+                                <input type="text" 
+                                       placeholder="1234 5678 9012 3456" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">วันหมดอายุ</label>
+                                    <input type="text" 
+                                           placeholder="MM/YY" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">CVV</label>
+                                    <input type="text" 
+                                           placeholder="123" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Order Summary -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-2xl shadow-lg p-8 sticky top-24">
+                        <h2 class="text-2xl font-black mb-6">สรุปคำสั่งซื้อ</h2>
+
+                        <!-- Cart Items -->
+                        <div class="space-y-4 mb-6 max-h-64 overflow-y-auto" id="checkoutItems">
+                            <!-- Items will be loaded here -->
+                        </div>
+
+                        <!-- Coupon -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold mb-2">รหัสคูปอง</label>
+                            <div class="flex gap-2">
+                                <input type="text" 
+                                       placeholder="ใส่รหัสคูปอง" 
+                                       class="flex-1 px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                                <button class="px-6 py-3 bg-black text-white rounded-lg font-bold hover:bg-gray-800 transition">
+                                    ใช้
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Price Summary -->
+                        <div class="border-t pt-6 space-y-3">
+                            <div class="flex justify-between text-gray-600">
+                                <span>ราคาสินค้า</span>
+                                <span id="subtotal">฿0</span>
+                            </div>
+                            <div class="flex justify-between text-gray-600">
+                                <span>ค่าจัดส่ง</span>
+                                <span id="shipping">฿100</span>
+                            </div>
+                            <div class="flex justify-between text-green-600">
+                                <span>ส่วนลด</span>
+                                <span id="discount">-฿0</span>
+                            </div>
+                            <div class="border-t pt-3 flex justify-between items-center">
+                                <span class="text-xl font-bold">ยอดรวมทั้งหมด</span>
+                                <span class="text-3xl font-black gradient-text" id="total">฿0</span>
+                            </div>
+                        </div>
+
+                        <!-- Place Order Button -->
+                        <button onclick="placeOrder()" class="w-full accent-gradient text-white py-4 rounded-full font-bold text-lg mt-6 hover:shadow-2xl transform hover:scale-105 transition">
+                            ชำระเงิน <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+
+                        <!-- Security Badges -->
+                        <div class="mt-6 text-center">
+                            <div class="flex items-center justify-center space-x-4 text-gray-400 text-2xl">
+                                <i class="fab fa-cc-visa"></i>
+                                <i class="fab fa-cc-mastercard"></i>
+                                <i class="fab fa-cc-paypal"></i>
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">
+                                <i class="fas fa-shield-alt mr-1"></i>
+                                ชำระเงินปลอดภัย 100%
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Modal (Hidden by default) -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-12 max-w-md mx-4 text-center">
+            <div class="w-20 h-20 accent-gradient rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-check text-white text-4xl"></i>
+            </div>
+            <h2 class="text-3xl font-black mb-4">สั่งซื้อสำเร็จ!</h2>
+            <p class="text-gray-600 mb-2">เลขที่คำสั่งซื้อ: <span class="font-bold">#0001</span></p>
+            <p class="text-gray-600 mb-8">
+                ขอบคุณที่ไว้วางใจเลือกซื้อกับเรา<br>
+                เราจะจัดส่งสินค้าให้เร็วที่สุด
+            </p>
+            <button onclick="window.location.href='index.html'" 
+                    class="accent-gradient text-white px-8 py-4 rounded-full font-bold hover:shadow-xl transition">
+                กลับหน้าแรก
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Load cart items
+        function loadCheckoutItems() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const itemsContainer = document.getElementById('checkoutItems');
+            
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = '<p class="text-gray-500 text-center py-8">ไม่มีสินค้าในตะกร้า</p>';
+                return;
+            }
+
+            itemsContainer.innerHTML = cart.map(item => `
+                <div class="flex items-center gap-4">
+                    <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-lg">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-sm">${item.name}</h4>
+                        <p class="text-gray-600 text-sm">จำนวน: ${item.quantity}</p>
+                    </div>
+                    <span class="font-bold">฿${(item.price * item.quantity).toLocaleString()}</span>
+                </div>
+            `).join('');
+
+            updatePriceSummary(cart);
+        }
+
+        // Update price summary
+        function updatePriceSummary(cart) {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const shipping = 100;
+            const discount = 0;
+            const total = subtotal + shipping - discount;
+
+            document.getElementById('subtotal').textContent = `฿${subtotal.toLocaleString()}`;
+            document.getElementById('shipping').textContent = `฿${shipping.toLocaleString()}`;
+            document.getElementById('discount').textContent = `-฿${discount.toLocaleString()}`;
+            document.getElementById('total').textContent = `฿${total.toLocaleString()}`;
+        }
+
+        // Place order
+        function placeOrder() {
+            // Simulate order processing
+            setTimeout(() => {
+                document.getElementById('successModal').classList.remove('hidden');
+                localStorage.removeItem('cart'); // Clear cart
+            }, 1000);
+        }
+
+        // Payment option selection
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.payment-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+            });
+        });
+
+        // Initialize
+        loadCheckoutItems();
+    </script>
+</body>
+</html>

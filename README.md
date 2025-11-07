@@ -101,12 +101,12 @@ E-Commerce/
 คุณสามารถเผยแพร่เว็บไซต์นี้ด้วย GitHub Pages ได้ทันที (Static Hosting):
 
 ### ตั้งค่าเบื้องต้น
-- สร้างรีโปบน GitHub และผลักโค้ดขึ้นสาขา `main`
+- สร้างรีโปบน GitHub และผลักโค้ดขึ้นสาขา `main` หรือ `master`
 - ไปที่ Settings → Pages → เลือก Source = GitHub Actions (recommended)
 
 ### อัตโนมัติผ่าน GitHub Actions
 โปรเจกต์นี้มีไฟล์ workflow ให้แล้วที่ `.github/workflows/pages.yml`
-- เมื่อ push ไปที่สาขา `main` จะ build และ deploy อัตโนมัติ
+- เมื่อ push ไปที่สาขา `main` หรือ `master` จะ build และ deploy อัตโนมัติ
 - ผลลัพธ์จะออนไลน์ที่ `https://<USERNAME>.github.io/<REPO>/`
 
 ### ไฟล์สนับสนุน

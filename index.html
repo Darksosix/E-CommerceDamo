@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLE STREET - Premium Sneakers Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-image {
+            transition: transform 0.5s ease;
+        }
+
+        .product-image:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .accent-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .nav-sticky {
+            transition: all 0.3s ease;
+        }
+
+        .nav-sticky.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .cart-badge {
+            top: -8px;
+            right: -8px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 5px;
+        }
+
+        .chat-bubble {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#667eea',
+                        secondary: '#764ba2',
+                        dark: '#1a1a1a',
+                        'dark-light': '#2d2d2d'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white text-gray-900">
+
+    <!-- Navigation -->
+    <nav class="nav-sticky fixed w-full top-0 z-50 bg-black text-white">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 accent-gradient rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shoe-prints text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-black tracking-tight">SOLE STREET</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="hover:text-primary transition">หน้าแรก</a>
+                    <a href="#products" class="hover:text-primary transition">สินค้า</a>
+                    <a href="#new-arrivals" class="hover:text-primary transition">สินค้าใหม่</a>
+                    <a href="#trends" class="hover:text-primary transition">เทรนด์</a>
+                    <a href="#reviews" class="hover:text-primary transition">รีวิว</a>
+                    <a href="admin.html" class="hover:text-primary transition">แอดมิน</a>
+                </div>
+
+                <!-- Search & Icons -->
+                <div class="flex items-center space-x-6">
+                    <!-- Search Bar -->
+                    <div class="hidden lg:flex items-center bg-gray-800 rounded-full px-4 py-2">
+                        <i class="fas fa-search text-gray-400 mr-2"></i>
+                        <input type="text" id="searchInput" placeholder="ค้นหารองเท้า..." 
+                               class="bg-transparent outline-none text-white w-48">
+                    </div>
+
+                    <!-- Cart Icon -->
+                    <div class="relative cursor-pointer" id="cartIcon">
+                        <i class="fas fa-shopping-cart text-xl hover:text-primary transition"></i>
+                        <span class="absolute cart-badge bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold" id="cartCount">0</span>
+                    </div>
+
+                    <!-- User Icon -->
+                    <i class="fas fa-user text-xl hover:text-primary transition cursor-pointer"></i>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button class="md:hidden" id="mobileMenuBtn">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="md:hidden hidden mt-4 pb-4" id="mobileMenu">
+                <div class="flex flex-col space-y-4">
+                    <a href="#" class="hover:text-primary transition">หน้าแรก</a>
+                    <a href="#products" class="hover:text-primary transition">สินค้า</a>
+                    <a href="#new-arrivals" class="hover:text-primary transition">สินค้าใหม่</a>
+                    <a href="#trends" class="hover:text-primary transition">เทรนด์</a>
+                    <a href="#reviews" class="hover:text-primary transition">รีวิว</a>
+                    <a href="admin.html" class="hover:text-primary transition">แอดมิน</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient pt-24 pb-16 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full filter blur-3xl"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-secondary rounded-full filter blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid md:grid-cols-2 gap-12 items-center min-h-[600px]">
+                <!-- Left Content -->
+                <div class="text-white animate-fade-in">
+                    <p class="text-primary text-sm font-semibold tracking-widest mb-4">COLLECTION 2025</p>
+                    <h1 class="text-6xl md:text-7xl font-black mb-6 leading-tight">
+                        STEP INTO<br>
+                        <span class="gradient-text">THE FUTURE</span>
+                    </h1>
+                    <p class="text-xl text-gray-300 mb-8 leading-relaxed">
+                        ค้นพบคอลเลกชั่นรองเท้าพรีเมียมที่ผสมผสานระหว่างสไตล์และความสะดวกสบาย
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button class="accent-gradient text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl transform hover:scale-105 transition">
+                            ช้อปเลย <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                        <button class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-black transition">
+                            ดูคอลเลกชั่น
+                        </button>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-8 mt-12">
+                        <div>
+                            <h3 class="text-4xl font-black gradient-text">500+</h3>
+                            <p class="text-gray-400 text-sm">สินค้า</p>
+                        </div>
+                        <div>
+                            <h3 class="text-4xl font-black gradient-text">50K+</h3>
+                            <p class="text-gray-400 text-sm">ลูกค้า</p>
+                        </div>
+                        <div>
+                            <h3 class="text-4xl font-black gradient-text">4.9★</h3>
+                            <p class="text-gray-400 text-sm">คะแนน</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Content - Hero Image -->
+                <div class="relative">
+                    <div class="relative z-10">
+                        <img src="images/hero-sneaker.png" 
+                             alt="Hero Sneaker" 
+                             class="w-full product-image"
+                             onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800'">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-20 blur-3xl transform rotate-12"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+            <a href="#products" class="text-white animate-bounce block">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Filter & Categories -->
+    <section class="py-8 bg-gray-100 sticky top-20 z-40">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <!-- Categories -->
+                <div class="flex flex-wrap gap-3">
+                    <button class="filter-btn bg-black text-white px-6 py-2 rounded-full font-semibold hover:bg-gray-800 transition" data-category="all">
+                        ทั้งหมด
+                    </button>
+                    <button class="filter-btn bg-white text-black px-6 py-2 rounded-full font-semibold hover:bg-gray-200 transition" data-category="running">
+                        วิ่ง
+                    </button>
+                    <button class="filter-btn bg-white text-black px-6 py-2 rounded-full font-semibold hover:bg-gray-200 transition" data-category="lifestyle">
+                        ไลฟ์สไตล์
+                    </button>
+                    <button class="filter-btn bg-white text-black px-6 py-2 rounded-full font-semibold hover:bg-gray-200 transition" data-category="basketball">
+                        บาสเกตบอล
+                    </button>
+                    <button class="filter-btn bg-white text-black px-6 py-2 rounded-full font-semibold hover:bg-gray-200 transition" data-category="limited">
+                        Limited Edition
+                    </button>
+                </div>
+
+                <!-- Sort -->
+                <div class="flex items-center gap-4">
+                    <label class="text-gray-700 font-semibold">เรียงตาม:</label>
+                    <select id="sortSelect" class="bg-white border border-gray-300 rounded-lg px-4 py-2 outline-none focus:border-primary">
+                        <option value="featured">แนะนำ</option>
+                        <option value="price-low">ราคา: ต่ำ-สูง</option>
+                        <option value="price-high">ราคา: สูง-ต่ำ</option>
+                        <option value="newest">ใหม่ล่าสุด</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section id="products" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-5xl font-black mb-4">
+                    FEATURED <span class="gradient-text">PRODUCTS</span>
+                </h2>
+                <p class="text-gray-600 text-lg">สินค้ายอดนิยมที่คัดสรรมาเพื่อคุณ</p>
+            </div>
+
+            <div id="productGrid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- Product Cards will be inserted here by JavaScript -->
+            </div>
+
+            <div class="text-center mt-12">
+                <button class="border-2 border-black text-black px-8 py-4 rounded-full font-bold hover:bg-black hover:text-white transition">
+                    โหลดเพิ่มเติม <i class="fas fa-plus ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Arrivals -->
+    <section id="new-arrivals" class="py-16 bg-gray-900 text-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <p class="text-primary text-sm font-semibold tracking-widest mb-2">NEW DROPS</p>
+                <h2 class="text-5xl font-black mb-4">
+                    LATEST <span class="gradient-text">ARRIVALS</span>
+                </h2>
+                <p class="text-gray-400 text-lg">รองเท้ารุ่นใหม่ล่าสุดที่คุณไม่ควรพลาด</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- New Arrival Cards -->
+                <div class="group relative overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=600" 
+                         alt="New Arrival" 
+                         class="w-full h-96 object-cover transform group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">NEW</span>
+                        <h3 class="text-2xl font-black mt-2">Air Force Premium</h3>
+                        <p class="text-gray-300 mb-4">฿5,900</p>
+                        <button class="bg-white text-black px-6 py-2 rounded-full font-bold hover:bg-gray-200 transition">
+                            ดูรายละเอียด
+                        </button>
+                    </div>
+                </div>
+
+                <div class="group relative overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600" 
+                         alt="New Arrival" 
+                         class="w-full h-96 object-cover transform group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">NEW</span>
+                        <h3 class="text-2xl font-black mt-2">Jordan Retro High</h3>
+                        <p class="text-gray-300 mb-4">฿7,500</p>
+                        <button class="bg-white text-black px-6 py-2 rounded-full font-bold hover:bg-gray-200 transition">
+                            ดูรายละเอียด
+                        </button>
+                    </div>
+                </div>
+
+                <div class="group relative overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600" 
+                         alt="New Arrival" 
+                         class="w-full h-96 object-cover transform group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">NEW</span>
+                        <h3 class="text-2xl font-black mt-2">Yeezy Boost 350</h3>
+                        <p class="text-gray-300 mb-4">฿8,900</p>
+                        <button class="bg-white text-black px-6 py-2 rounded-full font-bold hover:bg-gray-200 transition">
+                            ดูรายละเอียด
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trends & Blog -->
+    <section id="trends" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-5xl font-black mb-4">
+                    SNEAKER <span class="gradient-text">TRENDS</span>
+                </h2>
+                <p class="text-gray-600 text-lg">อัพเดทเทรนด์รองเท้าและข่าวสารล่าสุด</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog Card 1 -->
+                <article class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover">
+                    <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?w=600" 
+                         alt="Trend Article" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <span class="text-primary text-sm font-semibold">7 พ.ย. 2025</span>
+                        <h3 class="text-2xl font-bold mt-2 mb-3">10 รองเท้าที่ต้องมีในปี 2025</h3>
+                        <p class="text-gray-600 mb-4">
+                            ค้นพบรองเท้าสุดฮอตที่จะมาแรงในปีนี้ พร้อมวิธีการจับคู่สไตล์ให้ดูเท่ที่สุด
+                        </p>
+                        <a href="#" class="text-primary font-bold hover:underline">
+                            อ่านต่อ <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Blog Card 2 -->
+                <article class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover">
+                    <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=600" 
+                         alt="Trend Article" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <span class="text-primary text-sm font-semibold">6 พ.ย. 2025</span>
+                        <h3 class="text-2xl font-bold mt-2 mb-3">วิธีดูแลรองเท้าให้อยู่ยาวนาน</h3>
+                        <p class="text-gray-600 mb-4">
+                            เทคนิคการดูแลรักษารองเท้าให้สะอาดและอยู่ได้นานแบบมือโปร
+                        </p>
+                        <a href="#" class="text-primary font-bold hover:underline">
+                            อ่านต่อ <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Blog Card 3 -->
+                <article class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover">
+                    <img src="https://images.unsplash.com/photo-1605348532760-6753d2c43329?w=600" 
+                         alt="Trend Article" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <span class="text-primary text-sm font-semibold">5 พ.ย. 2025</span>
+                        <h3 class="text-2xl font-bold mt-2 mb-3">Sneaker Culture ในประเทศไทย</h3>
+                        <p class="text-gray-600 mb-4">
+                            ติดตามวัฒนธรรมรองเท้าผ้าใบที่กำลังมาแรงในเมืองไทย
+                        </p>
+                        <a href="#" class="text-primary font-bold hover:underline">
+                            อ่านต่อ <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-5xl font-black mb-4">
+                    CUSTOMER <span class="gradient-text">REVIEWS</span>
+                </h2>
+                <p class="text-gray-600 text-lg">ความพึงพอใจจากลูกค้าจริง</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Review Card 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://i.pravatar.cc/150?img=1" 
+                             alt="Customer" 
+                             class="w-16 h-16 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-lg">สมชาย ใจดี</h4>
+                            <div class="text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">
+                        "รองเท้าคุณภาพดีมาก ใส่สบายเท้ามาก ส่งไวมากๆ บริการประทับใจ 
+                        แนะนำเลยครับร้านนี้"
+                    </p>
+                </div>
+
+                <!-- Review Card 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://i.pravatar.cc/150?img=5" 
+                             alt="Customer" 
+                             class="w-16 h-16 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-lg">สมหญิง รักสวย</h4>
+                            <div class="text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">
+                        "ของแท้ 100% ราคาดี ส่งไว บริการดีมากค่ะ จะกลับมาซื้ออีกแน่นอน 
+                        ขอบคุณร้านมากค่ะ"
+                    </p>
+                </div>
+
+                <!-- Review Card 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://i.pravatar.cc/150?img=8" 
+                             alt="Customer" 
+                             class="w-16 h-16 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-lg">ธนากร วิ่งเร็ว</h4>
+                            <div class="text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">
+                        "เป็นลูกค้าประจำของร้านเลย สินค้าดี คุณภาพเยี่ยม 
+                        แอดมินใจดีมากครับ"
+                    </p>
+                </div>
+            </div>
+
+            <!-- Social Proof -->
+            <div class="mt-16 text-center">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="text-4xl font-black gradient-text">50,000+</h3>
+                        <p class="text-gray-600">ลูกค้าพึงพอใจ</p>
+                    </div>
+                    <div>
+                        <h3 class="text-4xl font-black gradient-text">4.9/5</h3>
+                        <p class="text-gray-600">คะแนนรีวิว</p>
+                    </div>
+                    <div>
+                        <h3 class="text-4xl font-black gradient-text">100%</h3>
+                        <p class="text-gray-600">ของแท้</p>
+                    </div>
+                    <div>
+                        <h3 class="text-4xl font-black gradient-text">24/7</h3>
+                        <p class="text-gray-600">บริการ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 accent-gradient text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-black mb-4">อัพเดทข่าวสารและโปรโมชั่น</h2>
+            <p class="text-lg mb-8 opacity-90">สมัครรับข่าวสารและรับส่วนลด 10% สำหรับการสั่งซื้อแรก</p>
+            <div class="max-w-md mx-auto flex gap-4">
+                <input type="email" 
+                       placeholder="อีเมลของคุณ" 
+                       class="flex-1 px-6 py-4 rounded-full outline-none text-gray-900">
+                <button class="bg-black text-white px-8 py-4 rounded-full font-bold hover:bg-gray-900 transition">
+                    สมัคร
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-16">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-10 h-10 accent-gradient rounded-lg flex items-center justify-center">
+                            <i class="fas fa-shoe-prints text-white text-xl"></i>
+                        </div>
+                        <span class="text-2xl font-black">SOLE STREET</span>
+                    </div>
+                    <p class="text-gray-400">
+                        ร้านขายรองเท้าพรีเมียมออนไลน์ ของแท้ 100% พร้อมส่งทั่วประเทศ
+                    </p>
+                    <div class="flex space-x-4 mt-6">
+                        <a href="#" class="text-gray-400 hover:text-primary transition">
+                            <i class="fab fa-facebook text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition">
+                            <i class="fab fa-instagram text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition">
+                            <i class="fab fa-twitter text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition">
+                            <i class="fab fa-line text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="font-bold text-lg mb-4">ลิงก์ด่วน</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">เกี่ยวกับเรา</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">สินค้าทั้งหมด</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">โปรโมชั่น</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">ติดต่อเรา</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div>
+                    <h3 class="font-bold text-lg mb-4">ช่วยเหลือ</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">การจัดส่ง</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">การคืนสินค้า</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">คำถามที่พบบ่อย</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">นโยบายความเป็นส่วนตัว</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="font-bold text-lg mb-4">ติดต่อเรา</h3>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3"></i>
+                            <span>123 ถนนสุขุมวิท กรุงเทพฯ</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3"></i>
+                            <span>02-123-4567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3"></i>
+                            <span>info@solestreet.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-wrap justify-between items-center">
+                    <p class="text-gray-400 mb-4 md:mb-0">© 2025 SOLE STREET. All rights reserved.</p>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-400">ชำระเงินผ่าน:</span>
+                        <i class="fab fa-cc-visa text-3xl"></i>
+                        <i class="fab fa-cc-mastercard text-3xl"></i>
+                        <i class="fab fa-cc-paypal text-3xl"></i>
+                        <i class="fas fa-mobile-alt text-3xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Live Chat Button -->
+    <div class="fixed bottom-8 right-8 z-50">
+        <button id="chatBtn" class="accent-gradient text-white w-16 h-16 rounded-full shadow-2xl flex items-center justify-center chat-bubble hover:scale-110 transition">
+            <i class="fas fa-comments text-2xl"></i>
+        </button>
+    </div>
+
+    <!-- Cart Sidebar (Hidden by default) -->
+    <div id="cartSidebar" class="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-black">ตะกร้าสินค้า</h3>
+                <button id="closeCart" class="text-gray-600 hover:text-black">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <div id="cartItems" class="space-y-4 mb-6 overflow-y-auto" style="max-height: 60vh;">
+                <!-- Cart items will be inserted here -->
+            </div>
+
+            <div class="border-t pt-4">
+                <div class="flex justify-between mb-4">
+                    <span class="font-bold text-lg">ยอดรวม:</span>
+                    <span class="font-black text-2xl gradient-text" id="cartTotal">฿0</span>
+                </div>
+                <a href="checkout.html" class="block w-full accent-gradient text-white text-center py-4 rounded-full font-bold hover:shadow-xl transition">
+                    ชำระเงิน
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay for cart -->
+    <div id="cartOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
