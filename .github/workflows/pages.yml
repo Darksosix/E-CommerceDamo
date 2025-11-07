@@ -1,43 +1,48 @@
-name: Deploy to GitHub Pages
+name: Deploy static site to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [main, master]
   workflow_dispatch:
 
+# Required permissions for Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Pages
+      - name: Configure GitHub Pages (enable if needed)
         uses: actions/configure-pages@v5
+        with:
+          # This flag programmatically enables Pages for the repo
+          enablement: true
 
-      - name: Upload artifact
+      # Optional: you can add a build step here if you later introduce tooling
+      # - name: Build (skip - pure static)
+      #   run: echo "No build step needed"
+
+      - name: Upload artifact (static site)
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the root of the repository (static site)
           path: .
 
   deploy:
-    needs: build
-    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
